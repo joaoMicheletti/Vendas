@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eBook - 10 Receitas para Emagrecer + Rotina Saudável</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+    header h1 {
+      font-size: 32px;
+      color: #1a1a1a;
+    }
+    header p {
+      font-size: 18px;
+      color: #666;
+    }
+    .highlight {
+      color: #e63946;
+      font-weight: bold;
+      font-size: 28px;
+    }
+    .timer {
+      text-align: center;
+      font-size: 20px;
+      background: #ffe5e5;
+      padding: 10px;
+      margin: 20px 0;
+      color: #b10000;
+      font-weight: bold;
+    }
+    .cta {
+      display: block;
+      background: #1d3557;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      border-radius: 6px;
+      font-size: 18px;
+      text-decoration: none;
+      margin: 20px auto;
+      max-width: 300px;
+    }
+    .cta:hover {
+      background: #457b9d;
+    }
+    .use-cases {
+      margin: 40px 0;
+    }
+    .use-cases h2 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .use-case {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .use-case img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .use-case p {
+      text-align: center;
+      font-size: 16px;
+      max-width: 600px;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Transforme sua Saúde com 10 Receitas + Rotina Saudável</h1>
+      <p>Descubra como emagrecer com saúde e consistência em um eBook prático, bonito e direto ao ponto.</p>
+      <p class="highlight">De <s>R$39,90</s> por apenas R$19,90</p>
+    </header>
+
+    <div class="timer">
+      Promoção disponível por tempo limitado! <br>
+      <span id="countdown"></span>
+    </div>
+
+    <a class="cta" href="https://www.mercadopago.com.br/checkout" target="_blank">Quero meu eBook agora!</a>
+    <a class="cta" href="https://www.mercadopago.com.br/checkout" target="_blank">Aproveitar o desconto!</a>
+
+    <div class="use-cases">
+      <h2>Casos de Uso do eBook</h2>
+
+      <div class="use-case">
+        <img src="vsadfsdf.png" alt="Receita Detox">
+        <p>"Usei a receita detox logo no primeiro dia e senti meu corpo mais leve e hidratado!" – Camila R.</p>
+      </div>
+
+      <div class="use-case">
+        <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1" alt="Rotina Matinal">
+        <p>"A rotina matinal me ajudou a manter o foco e disciplina sem ser algo pesado." – João M.</p>
+      </div>
+
+      <div class="use-case">
+        <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092" alt="Almoço Saudável">
+        <p>"As marmitas fitness foram uma revolução nos meus almoços de trabalho." – Priscila S.</p>
+      </div>
+    </div>
+
+    <footer>
+      eBook entregue via download após confirmação de pagamento. <br>
+      Copyright &copy; 2025 – Todos os direitos reservados.
+    </footer>
+  </div>
+
+  <script>
+    let countdownMinutes = 15;
+    let endTime = new Date().getTime() + countdownMinutes * 60 * 1000;
+    const countdown = document.getElementById("countdown");
+    const interval = setInterval(() => {
+      let now = new Date().getTime();
+      let distance = endTime - now;
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      countdown.innerHTML = `${minutes}m ${seconds}s`;
+      if (distance < 0) {
+        clearInterval(interval);
+        countdown.innerHTML = "Oferta expirada!";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
