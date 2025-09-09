@@ -2,132 +2,125 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Status do Pagamento | eBook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Status do Pedido | Liberação via WhatsApp</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes riseIn {
+      0% { opacity: 0; transform: translateY(16px) scale(.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .rise-in { animation: riseIn .8s ease-out .2s both; }
+    .shine {
+      position: relative; overflow: hidden;
+    }
+    .shine::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.3) 50%, transparent 100%);
+      transform: translateX(-120%); animation: shine 2.2s ease-in-out 1.2s infinite;
+    }
+    @keyframes shine { to { transform: translateX(120%); } }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-50">
-  <main class="max-w-xl mx-auto p-6">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Verificando seu pagamento…</h1>
+<body class="min-h-screen bg-gradient-to-b from-white to-slate-50 text-slate-800">
+  <main class="max-w-3xl mx-auto px-6 py-14">
+    <!-- Card -->
+    <section class="bg-white border border-slate-200/70 rounded-2xl shadow-sm p-8 md:p-12">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <!-- Texto -->
+        <div>
+          <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">
+            Verificando seu pagamento…
+          </h1>
+          <p class="mt-3 text-slate-600">
+            Para agilizar a liberação do seu eBook, clique no botão abaixo para nos chamar no WhatsApp.
+            Sua mensagem já vai com os dados do pedido — é só anexar o comprovante. 💬
+          </p>
 
-    <div id="box" class="rounded-lg border bg-white p-5">
-      <p id="info" class="text-gray-600">Aguarde um instante enquanto confirmamos com o Mercado Pago.</p>
+          <!-- Resumo (opcional) -->
+          <div id="resumo" class="mt-5 text-sm text-slate-500 bg-slate-50 border border-slate-200 rounded-lg p-3 hidden"></div>
 
-      <div id="statusWrap" class="hidden mt-4">
-        <p class="text-sm text-gray-500"><strong>ID do Pagamento:</strong> <span id="pid"></span></p>
-        <p class="text-lg mt-2"><strong>Status:</strong> <span id="human"></span></p>
-        <p id="detail" class="text-sm text-gray-500 mt-1"></p>
+          <!-- Botão WhatsApp -->
+          <button id="btnZap"
+            class="rise-in mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 active:scale-[.99] transition shine">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.5 0 .2 5.3.2 11.86c0 2.09.55 4.05 1.6 5.82L0 24l6.5-1.7a11.8 11.8 0 0 0 5.56 1.42h.01c6.56 0 11.86-5.3 11.86-11.86 0-3.17-1.24-6.15-3.41-8.32ZM12.07 21.3h-.01a9.52 9.52 0 0 1-4.86-1.33l-.35-.2-3.86 1.02 1.03-3.77-.23-.39a9.43 9.43 0 0 1-1.46-5.07C2.33 6.55 6.9 2 12.07 2c2.52 0 4.88.98 6.67 2.76a9.39 9.39 0 0 1 2.76 6.66c0 5.17-4.56 9.88-9.43 9.88Zm5.43-7.33c-.3-.15-1.78-.88-2.05-.98-.27-.1-.47-.15-.66.15-.2.3-.76.98-.94 1.18-.17.2-.35.23-.64.08-.3-.15-1.24-.46-2.36-1.46-.87-.77-1.45-1.73-1.62-2.02-.17-.3-.02-.46.13-.61.14-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.51h-.56c-.2 0-.52.08-.8.38-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.12 3.23 5.14 4.52.72.31 1.28.49 1.72.63.72.23 1.38.2 1.9.13.58-.09 1.78-.72 2.03-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
+            </svg>
+            Pedir liberação do eBook
+          </button>
+
+          <p class="mt-3 text-xs text-slate-500">
+            Dica: deixe o comprovante em mãos — nossa equipe libera rapidinho. ⏱️
+          </p>
+        </div>
+
+        <!-- Imagem -->
+        <div class="justify-self-center">
+          <img
+            src="ebook.png"
+            alt="Solicitação de liberação do eBook"
+            class="w-full max-w-sm rounded-2xl shadow-sm rise-in" />
+        </div>
       </div>
-
-      <div id="approved" class="hidden mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
-        <p class="font-semibold text-green-800">Pagamento aprovado! ✅</p>
-        <p class="text-green-700 text-sm mt-1">Seu eBook já está liberado para download.</p>
-        <a id="downloadBtn"
-           href="#"
-           class="inline-flex items-center mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-semibold">
-           Baixar eBook (PDF)
-        </a>
-      </div>
-
-      <div id="pending" class="hidden mt-4 p-4 rounded-lg bg-amber-50 border border-amber-200">
-        <p class="font-semibold text-amber-800">Pagamento pendente ⏳</p>
-        <p class="text-amber-700 text-sm mt-1">Para PIX/Boleto, a confirmação pode levar alguns minutos. Você receberá um e-mail assim que for aprovado.</p>
-      </div>
-
-      <div id="rejected" class="hidden mt-4 p-4 rounded-lg bg-rose-50 border border-rose-200">
-        <p class="font-semibold text-rose-800">Pagamento recusado ❌</p>
-        <p class="text-rose-700 text-sm mt-1">Tente novamente com outro método ou revise os dados do cartão.</p>
-      </div>
-
-      <div id="error" class="hidden mt-4 p-4 rounded-lg bg-rose-50 border border-rose-200">
-        <p class="font-semibold text-rose-800">Erro ao consultar</p>
-        <p id="errMsg" class="text-rose-700 text-sm mt-1"></p>
-      </div>
-
-      <details class="mt-4 text-sm text-gray-500">
-        <summary>Ver parâmetros recebidos</summary>
-        <pre id="debug" class="whitespace-pre-wrap"></pre>
-      </details>
-    </div>
+    </section>
   </main>
 
   <script>
-    // Ajuste para o caminho real do seu PDF (ideal: link protegido)
-    const ebookUrl = "/downloads/ebook-10-receitas.pdf";
+    // 1) Coloque aqui o seu número de WhatsApp no formato internacional (ex.: 55DDDNUMERO)
+    const PHONE = "5511932223599"; // Ex.: 5599999999999
 
-    function humanize(status) {
-      switch (status) {
-        case "approved": return "Aprovado ✅";
-        case "pending": return "Pendente ⏳";
-        case "rejected": return "Recusado ❌";
-        case "in_process": return "Em análise 🔎";
-        case "refunded": return "Estornado ↩️";
-        case "canceled": return "Cancelado 🚫";
-        case "charged_back": return "Chargeback ⚠️";
-        default: return status || "Desconhecido";
-      }
-    }
-
-    async function main() {
+    // 2) Monta mensagem com dados da URL para facilitar a validação do pedido
+    function buildMessage() {
       const p = new URLSearchParams(window.location.search);
+      const payment_id = p.get("payment_id") || p.get("collection_id") || "";
+      const merchant_order_id = p.get("merchant_order_id") || "";
+      const preference_id = p.get("preference_id") || "";
+      const status = p.get("status") || p.get("collection_status") || "";
 
-      // Coleta os parâmetros mais importantes
-      const query = {
-        collection_id: p.get("collection_id"),
-        collection_status: p.get("collection_status"),
-        payment_id: p.get("payment_id"),
-        status: p.get("status"),
-        payment_type: p.get("payment_type"),
-        merchant_order_id: p.get("merchant_order_id"),
-        preference_id: p.get("preference_id"),
-        site_id: p.get("site_id"),
-        processing_mode: p.get("processing_mode"),
-        external_reference: p.get("external_reference"),
-        merchant_account_id: p.get("merchant_account_id"),
-      };
+      const linhas = [
+        "Olá! Acabei de efetuar o pagamento do eBook.",
+        "Vou enviar o comprovante para que possam liberar meu acesso. 🙏",
+        "",
+        payment_id ? `• payment_id: ${payment_id}` : "",
+        merchant_order_id ? `• merchant_order_id: ${merchant_order_id}` : "",
+        preference_id ? `• preference_id: ${preference_id}` : "",
+        status ? `• status recebido na URL: ${status}` : ""
+      ].filter(Boolean);
 
-      document.getElementById("debug").textContent = JSON.stringify(query, null, 2);
-
-      // Usa payment_id ou collection_id
-      const id = query.payment_id || query.collection_id;
-      if (!id) {
-        document.getElementById("error").classList.remove("hidden");
-        document.getElementById("errMsg").textContent = "Sem payment_id/collection_id na URL.";
-        return;
-      }
-
-      try {
-        // Chama seu endpoint serverless (seguro)
-        const r = await fetch(`/api/mp-status?payment_id=${encodeURIComponent(id)}`);
-        const data = await r.json();
-
-        document.getElementById("statusWrap").classList.remove("hidden");
-        document.getElementById("pid").textContent = String(data.id || id);
-        document.getElementById("human").textContent = humanize(data.status);
-        document.getElementById("detail").textContent = data.status_detail ? `Detalhe: ${data.status_detail}` : "";
-
-        if (!data.ok) {
-          document.getElementById("error").classList.remove("hidden");
-          document.getElementById("errMsg").textContent = data.error || "Tente novamente em instantes.";
-          return;
-        }
-
-        if (data.status === "approved") {
-          const btn = document.getElementById("downloadBtn");
-          btn.href = ebookUrl;
-          document.getElementById("approved").classList.remove("hidden");
-        } else if (data.status === "pending" || data.status === "in_process") {
-          document.getElementById("pending").classList.remove("hidden");
-        } else if (data.status === "rejected" || data.status === "canceled") {
-          document.getElementById("rejected").classList.remove("hidden");
-        }
-      } catch (e) {
-        document.getElementById("error").classList.remove("hidden");
-        document.getElementById("errMsg").textContent = e?.message || "Erro ao consultar status.";
-      } 
+      return linhas.join("\n");
     }
 
-    main();
+    function whatsappLink(message) {
+      const base = `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+      return base;
+    }
+
+    // 3) Prepara botão e resumo
+    (function init(){
+      const msg = buildMessage();
+      const url = whatsappLink(msg);
+
+      const btn = document.getElementById("btnZap");
+      btn.addEventListener("click", () => {
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+
+      // Mostra um resumo (opcional) com os dados capturados da URL
+      const p = new URLSearchParams(window.location.search);
+      const debug = {
+        payment_id: p.get("payment_id"),
+        collection_id: p.get("collection_id"),
+        merchant_order_id: p.get("merchant_order_id"),
+        status: p.get("status") || p.get("collection_status"),
+        preference_id: p.get("preference_id")
+      };
+      const resumo = document.getElementById("resumo");
+      const temAlgo = Object.values(debug).some(Boolean);
+      if (temAlgo) {
+        resumo.classList.remove("hidden");
+        resumo.textContent = "Dados do pedido: " + JSON.stringify(debug);
+      }
+    })();
   </script>
 </body>
 </html>
