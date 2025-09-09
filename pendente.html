@@ -122,5 +122,83 @@
       }
     })();
   </script>
+  <script>
+    // Ajuste para o caminho real do seu PDF (ideal: link protegido)
+    const ebookUrl = "/downloads/ebook-10-receitas.pdf";
+
+    function humanize(status) {
+      switch (status) {
+        case "approved": return "Aprovado ✅";
+        case "pending": return "Pendente ⏳";
+        case "rejected": return "Recusado ❌";
+        case "in_process": return "Em análise 🔎";
+        case "refunded": return "Estornado ↩️";
+        case "canceled": return "Cancelado 🚫";
+        case "charged_back": return "Chargeback ⚠️";
+        default: return status || "Desconhecido";
+      }
+    }
+
+    async function main() {
+      const p = new URLSearchParams(window.location.search);
+
+      // Coleta os parâmetros mais importantes
+      const query = {
+        collection_id: p.get("collection_id"),
+        collection_status: p.get("collection_status"),
+        payment_id: p.get("payment_id"),
+        status: p.get("status"),
+        payment_type: p.get("payment_type"),
+        merchant_order_id: p.get("merchant_order_id"),
+        preference_id: p.get("preference_id"),
+        site_id: p.get("site_id"),
+        processing_mode: p.get("processing_mode"),
+        external_reference: p.get("external_reference"),
+        merchant_account_id: p.get("merchant_account_id"),
+      };
+
+      document.getElementById("debug").textContent = JSON.stringify(query, null, 2);
+
+      // Usa payment_id ou collection_id
+      const id = query.payment_id || query.collection_id;
+      if (!id) {
+        document.getElementById("error").classList.remove("hidden");
+        document.getElementById("errMsg").textContent = "Sem payment_id/collection_id na URL.";
+        return;
+      }
+
+      try {
+        // Chama seu endpoint serverless (seguro)
+        const r = await fetch(`/api/mp-status?payment_id=${encodeURIComponent(id)}`);
+        const data = await r.json();
+
+        document.getElementById("statusWrap").classList.remove("hidden");
+        document.getElementById("pid").textContent = String(data.id || id);
+        document.getElementById("human").textContent = humanize(data.status);
+        document.getElementById("detail").textContent = data.status_detail ? `Detalhe: ${data.status_detail}` : "";
+
+        if (!data.ok) {
+          document.getElementById("error").classList.remove("hidden");
+          document.getElementById("errMsg").textContent = data.error || "Tente novamente em instantes.";
+          return;
+        }
+
+        if (data.status === "approved") {
+          const btn = document.getElementById("downloadBtn");
+          btn.href = ebookUrl;
+          document.getElementById("approved").classList.remove("hidden");
+        } else if (data.status === "pending" || data.status === "in_process") {
+          document.getElementById("pending").classList.remove("hidden");
+        } else if (data.status === "rejected" || data.status === "canceled") {
+          document.getElementById("rejected").classList.remove("hidden");
+        }
+      } catch (e) {
+        document.getElementById("error").classList.remove("hidden");
+        document.getElementById("errMsg").textContent = e?.message || "Erro ao consultar status.";
+      }
+    }
+
+    main();
+  </script>
 </body>
 </html>
