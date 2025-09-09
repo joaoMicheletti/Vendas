@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Status do Pagamento | eBook</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+  <main class="max-w-xl mx-auto p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Verificando seu pagamento…</h1>
+
+    <div id="box" class="rounded-lg border bg-white p-5">
+      <p id="info" class="text-gray-600">Aguarde um instante enquanto confirmamos com o Mercado Pago.</p>
+
+      <div id="statusWrap" class="hidden mt-4">
+        <p class="text-sm text-gray-500"><strong>ID do Pagamento:</strong> <span id="pid"></span></p>
+        <p class="text-lg mt-2"><strong>Status:</strong> <span id="human"></span></p>
+        <p id="detail" class="text-sm text-gray-500 mt-1"></p>
+      </div>
+
+      <div id="approved" class="hidden mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
+        <p class="font-semibold text-green-800">Pagamento aprovado! ✅</p>
+        <p class="text-green-700 text-sm mt-1">Seu eBook já está liberado para download.</p>
+        <a id="downloadBtn"
+           href="#"
+           class="inline-flex items-center mt-3 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-semibold">
+           Baixar eBook (PDF)
+        </a>
+      </div>
+
+      <div id="pending" class="hidden mt-4 p-4 rounded-lg bg-amber-50 border border-amber-200">
+        <p class="font-semibold text-amber-800">Pagamento pendente ⏳</p>
+        <p class="text-amber-700 text-sm mt-1">Para PIX/Boleto, a confirmação pode levar alguns minutos. Você receberá um e-mail assim que for aprovado.</p>
+      </div>
+
+      <div id="rejected" class="hidden mt-4 p-4 rounded-lg bg-rose-50 border border-rose-200">
+        <p class="font-semibold text-rose-800">Pagamento recusado ❌</p>
+        <p class="text-rose-700 text-sm mt-1">Tente novamente com outro método ou revise os dados do cartão.</p>
+      </div>
+
+      <div id="error" class="hidden mt-4 p-4 rounded-lg bg-rose-50 border border-rose-200">
+        <p class="font-semibold text-rose-800">Erro ao consultar</p>
+        <p id="errMsg" class="text-rose-700 text-sm mt-1"></p>
+      </div>
+
+      <details class="mt-4 text-sm text-gray-500">
+        <summary>Ver parâmetros recebidos</summary>
+        <pre id="debug" class="whitespace-pre-wrap"></pre>
+      </details>
+    </div>
+  </main>
+
+  <script>
+    // Ajuste para o caminho real do seu PDF (ideal: link protegido)
+    const ebookUrl = "/downloads/ebook-10-receitas.pdf";
+
+    function humanize(status) {
+      switch (status) {
+        case "approved": return "Aprovado ✅";
+        case "pending": return "Pendente ⏳";
+        case "rejected": return "Recusado ❌";
+        case "in_process": return "Em análise 🔎";
+        case "refunded": return "Estornado ↩️";
+        case "canceled": return "Cancelado 🚫";
+        case "charged_back": return "Chargeback ⚠️";
+        default: return status || "Desconhecido";
+      }
+    }
+
+    async function main() {
+      const p = new URLSearchParams(window.location.search);
+
+      // Coleta os parâmetros mais importantes
+      const query = {
+        collection_id: p.get("collection_id"),
+        collection_status: p.get("collection_status"),
+        payment_id: p.get("payment_id"),
+        status: p.get("status"),
+        payment_type: p.get("payment_type"),
+        merchant_order_id: p.get("merchant_order_id"),
+        preference_id: p.get("preference_id"),
+        site_id: p.get("site_id"),
+        processing_mode: p.get("processing_mode"),
+        external_reference: p.get("external_reference"),
+        merchant_account_id: p.get("merchant_account_id"),
+      };
+
+      document.getElementById("debug").textContent = JSON.stringify(query, null, 2);
+
+      // Usa payment_id ou collection_id
+      const id = query.payment_id || query.collection_id;
+      if (!id) {
+        document.getElementById("error").classList.remove("hidden");
+        document.getElementById("errMsg").textContent = "Sem payment_id/collection_id na URL.";
+        return;
+      }
+
+      try {
+        // Chama seu endpoint serverless (seguro)
+        const r = await fetch(`/api/mp-status?payment_id=${encodeURIComponent(id)}`);
+        const data = await r.json();
+
+        document.getElementById("statusWrap").classList.remove("hidden");
+        document.getElementById("pid").textContent = String(data.id || id);
+        document.getElementById("human").textContent = humanize(data.status);
+        document.getElementById("detail").textContent = data.status_detail ? `Detalhe: ${data.status_detail}` : "";
+
+        if (!data.ok) {
+          document.getElementById("error").classList.remove("hidden");
+          document.getElementById("errMsg").textContent = data.error || "Tente novamente em instantes.";
+          return;
+        }
+
+        if (data.status === "approved") {
+          const btn = document.getElementById("downloadBtn");
+          btn.href = ebookUrl;
+          document.getElementById("approved").classList.remove("hidden");
+        } else if (data.status === "pending" || data.status === "in_process") {
+          document.getElementById("pending").classList.remove("hidden");
+        } else if (data.status === "rejected" || data.status === "canceled") {
+          document.getElementById("rejected").classList.remove("hidden");
+        }
+      } catch (e) {
+        document.getElementById("error").classList.remove("hidden");
+        document.getElementById("errMsg").textContent = e?.message || "Erro ao consultar status.";
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
