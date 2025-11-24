@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Status do Pedido | Liberação via WhatsApp</title>
+  <title>Status do Pedido | Liberação do BOT via WhatsApp</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes riseIn {
@@ -16,49 +16,56 @@
     }
     .shine::after{
       content:""; position:absolute; inset:0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.3) 50%, transparent 100%);
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.2) 50%, transparent 100%);
       transform: translateX(-120%); animation: shine 2.2s ease-in-out 1.2s infinite;
     }
     @keyframes shine { to { transform: translateX(120%); } }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-white to-slate-50 text-slate-800">
+<body class="min-h-screen bg-gradient-to-b from-slate-900 via-black to-slate-950 text-slate-50">
   <main class="max-w-3xl mx-auto px-6 py-14">
     <!-- Card -->
-    <section class="bg-white border border-slate-200/70 rounded-2xl shadow-sm p-8 md:p-12">
+    <section class="bg-slate-900/90 border border-slate-700 rounded-2xl shadow-lg p-8 md:p-12">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <!-- Texto -->
         <div>
           <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">
-            Verificando seu pagamento…
+            Verificando seu pagamento do BOT…
           </h1>
-          <p class="mt-3 text-slate-600">
-            Para agilizar a liberação do seu eBook, clique no botão abaixo para nos chamar no WhatsApp.
+          <p class="mt-3 text-slate-200 text-sm md:text-base">
+            Para agilizar a liberação do seu <strong>BOT de Sinais Fortune Tiger</strong>,
+            clique no botão abaixo para falar com nossa equipe pelo WhatsApp.
             Sua mensagem já vai com os dados do pedido — é só anexar o comprovante. 💬
           </p>
 
-          <!-- Resumo (opcional) -->
+          <!-- Resumo (dados capturados da URL) -->
+          <p id="resumo" class="hidden mt-3 text-xs text-slate-400 bg-slate-800/60 rounded-lg p-3"></p>
 
           <!-- Botão WhatsApp -->
           <button id="btnZap"
-            class="rise-in mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 active:scale-[.99] transition shine">
+            class="rise-in mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 active:scale-[.99] transition shine text-sm md:text-base">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.5 0 .2 5.3.2 11.86c0 2.09.55 4.05 1.6 5.82L0 24l6.5-1.7a11.8 11.8 0 0 0 5.56 1.42h.01c6.56 0 11.86-5.3 11.86-11.86 0-3.17-1.24-6.15-3.41-8.32ZM12.07 21.3h-.01a9.52 9.52 0 0 1-4.86-1.33l-.35-.2-3.86 1.02 1.03-3.77-.23-.39a9.43 9.43 0 0 1-1.46-5.07C2.33 6.55 6.9 2 12.07 2c2.52 0 4.88.98 6.67 2.76a9.39 9.39 0 0 1 2.76 6.66c0 5.17-4.56 9.88-9.43 9.88Zm5.43-7.33c-.3-.15-1.78-.88-2.05-.98-.27-.1-.47-.15-.66.15-.2.3-.76.98-.94 1.18-.17.2-.35.23-.64.08-.3-.15-1.24-.46-2.36-1.46-.87-.77-1.45-1.73-1.62-2.02-.17-.3-.02-.46.13-.61.14-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.51h-.56c-.2 0-.52.08-.8.38-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.12 3.23 5.14 4.52.72.31 1.28.49 1.72.63.72.23 1.38.2 1.9.13.58-.09 1.78-.72 2.03-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
             </svg>
-            Pedir liberação do eBook
+            Pedir liberação do BOT
           </button>
 
-          <p class="mt-3 text-xs text-slate-500">
-            Dica: deixe o comprovante em mãos — nossa equipe libera rapidinho. ⏱️
+          <p class="mt-3 text-xs text-slate-400">
+            Dica: já deixe o comprovante de pagamento separado — isso agiliza ainda mais a ativação do seu acesso. ⏱️
           </p>
         </div>
 
         <!-- Imagem -->
         <div class="justify-self-center">
-          <img
-            src="ebook.png"
-            alt="Solicitação de liberação do eBook"
-            class="w-full max-w-sm rounded-2xl shadow-sm rise-in" />
+          <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 shadow-lg">
+            <img
+              src="https://via.placeholder.com/360x240/020617/ffffff?text=BOT+Fortune+Tiger"
+              alt="Liberação do BOT Fortune Tiger"
+              class="w-full max-w-sm rounded-xl rise-in" />
+            <p class="mt-3 text-xs text-slate-300 text-center">
+              Após a validação, você recebe as instruções completas de uso do BOT. 🎯
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -66,7 +73,7 @@
 
   <script>
     // 1) Coloque aqui o seu número de WhatsApp no formato internacional (ex.: 55DDDNUMERO)
-    const PHONE = "5511932223599"; // Ex.: 5599999999999
+    const PHONE = "5511932223599"; // Ex.: 5511999999999
 
     // 2) Monta mensagem com dados da URL para facilitar a validação do pedido
     function buildMessage() {
@@ -77,8 +84,8 @@
       const status = p.get("status") || p.get("collection_status") || "";
 
       const linhas = [
-        "Olá! Acabei de efetuar o pagamento do eBook.",
-        "Vou enviar o comprovante para que possam liberar meu acesso. 🙏",
+        "Olá! Fiz a compra do BOT de Sinais Fortune Tiger. 🐅",
+        "Gostaria de solicitar a liberação do meu acesso. Vou enviar o comprovante em seguida. 🙏",
         "",
         payment_id ? `• payment_id: ${payment_id}` : "",
         merchant_order_id ? `• merchant_order_id: ${merchant_order_id}` : "",
@@ -115,7 +122,7 @@
       };
       const resumo = document.getElementById("resumo");
       const temAlgo = Object.values(debug).some(Boolean);
-      if (temAlgo) {
+      if (temAlgo && resumo) {
         resumo.classList.remove("hidden");
         resumo.textContent = "Dados do pedido: " + JSON.stringify(debug);
       }
